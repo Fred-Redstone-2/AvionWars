@@ -1,0 +1,10 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "avionwars:ore_uranium"
+    },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{}]
+    }
+}

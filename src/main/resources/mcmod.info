@@ -1,0 +1,16 @@
+[
+{
+  "modid": "avionwars",
+  "name": "AvionWars Extension Mod",
+  "description": "Items and features for the AvionWars gamemode.",
+  "version": "1.0",
+  "mcversion": "1.12.2",
+  "url": "https://www.youtube.com/@fred_redstone",
+  "updateUrl": "",
+  "authorList": ["Fredstone"],
+  "credits": "McJty and Cubicoder for their tutorials\nMekanism, Flan and Mojang Studios for the textures\nAnd the Legacy Modding Discord server for their amazing help",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

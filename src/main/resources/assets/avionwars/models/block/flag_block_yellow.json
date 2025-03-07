@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "avionwars:blocks/flag_block_yellow"
+    }
+}

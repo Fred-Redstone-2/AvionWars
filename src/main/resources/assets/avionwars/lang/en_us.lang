@@ -1,0 +1,20 @@
+# Items
+item.avionwars.ingot_lead.name=Lead Ingot
+item.avionwars.ingot_copper.name=Copper Ingot
+item.avionwars.ingot_uranium.name=Uranium Ingot
+item.avionwars.flag_green.name=Green Flag
+item.avionwars.flag_yellow.name=Yellow Flag
+item.avionwars.flag.name=Flag
+
+# Blocks
+tile.avionwars.ore_lead.name=Lead Ore
+tile.avionwars.ore_copper.name=Copper Ore
+tile.avionwars.ore_uranium.name=Uranium Ore
+tile.avionwars.flag_block_green.name=Green Flag Block
+tile.avionwars.flag_block_yellow.name=Yellow Flag Block
+
+# Creative Tabs
+itemGroup.avionwars=AvionWars
+
+#Enchantments
+enchantment.avionwars.death_keeping=Death Keeping
