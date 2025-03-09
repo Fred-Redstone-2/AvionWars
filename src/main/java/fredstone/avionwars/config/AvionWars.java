@@ -57,7 +57,7 @@ public class AvionWars {
         event.registerServerCommand(new ToggleBuildingCommand());
         event.registerServerCommand(new SetSpawnpointCommand());
         event.registerServerCommand(new TeamStatusCommand());
-        event.registerServerCommand(new TestCommand());
+        event.registerServerCommand(new ToggleExplosionsCommand());
         event.registerServerCommand(new ResetCommand());
     }
 }

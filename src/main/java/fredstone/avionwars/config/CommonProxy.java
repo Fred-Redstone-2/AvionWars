@@ -12,9 +12,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.command.CommandException;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -34,7 +32,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -53,6 +50,7 @@ public class CommonProxy {
     public static BlockPos yellowFlagLocation;
     public static BlockPos greenFlagLocation;
     public static boolean replaceBlocks = true;
+    public static boolean explosionEnable = false;
 
     public void preInit(FMLPreInitializationEvent event) {
         File directory = event.getModConfigurationDirectory();
@@ -275,6 +273,13 @@ public class CommonProxy {
     @SubscribeEvent
     public static void onDamage(LivingDamageEvent event) {
         if (!GameStartCommand.gameStarted && event.getEntity() instanceof EntityPlayer) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onExplosion(ExplosionEvent event) {
+        if (!explosionEnable) {
             event.setCanceled(true);
         }
     }
