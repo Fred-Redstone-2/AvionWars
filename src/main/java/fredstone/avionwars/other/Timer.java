@@ -1,14 +1,13 @@
 package fredstone.avionwars.other;
 
 import fredstone.avionwars.config.AvionWars;
-import fredstone.avionwars.config.CommonProxy;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.server.CommandScoreboard;
 import net.minecraft.util.text.TextComponentString;
 
 public class Timer {
-    private int nbSeconds;
+    private final int nbSeconds;
 
     public Timer(int nbSeconds) {
         this.nbSeconds = nbSeconds;

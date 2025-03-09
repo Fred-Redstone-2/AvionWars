@@ -1,9 +1,6 @@
 package fredstone.avionwars.commands;
 
-import fredstone.avionwars.config.AvionWars;
 import fredstone.avionwars.config.CommonProxy;
-import fredstone.avionwars.other.ScoreboardAvionWars;
-import fredstone.avionwars.other.Timer;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

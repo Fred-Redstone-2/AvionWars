@@ -1,7 +1,6 @@
 package fredstone.avionwars.commands;
 
 import fredstone.avionwars.config.CommonProxy;
-import fredstone.avionwars.config.Config;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -11,10 +10,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nonnull;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 
 public class SetSpawnpointCommand extends CommandBase {
     @Override

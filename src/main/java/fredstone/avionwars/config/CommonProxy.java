@@ -278,9 +278,9 @@ public class CommonProxy {
     }
 
     @SubscribeEvent
-    public static void onExplosion(ExplosionEvent event) {
+    public static void onExplosion(ExplosionEvent.Detonate event) {
         if (!explosionEnable) {
-            event.setCanceled(true);
+            event.getAffectedBlocks().clear();
         }
     }
 
