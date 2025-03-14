@@ -74,7 +74,6 @@ public class GameStartCommand extends CommandBase {
                 BlockPos greenSpawn = CommonProxy.teamGreen.spawnpoint;
                 for (EntityPlayer player : CommonProxy.teamYellow.getPlayers()) {
                     player.setPositionAndUpdate(yellowSpawn.getX(), yellowSpawn.getY(), yellowSpawn.getZ());
-                    player.inventory.armorInventory.set(3, ItemGenerator.getHelmet(false));
                     player.inventory.armorInventory.set(2, ItemGenerator.getChestplate(false));
                     player.inventory.armorInventory.set(1, ItemGenerator.getLeggings(false));
                     player.inventory.armorInventory.set(0, ItemGenerator.getBoots(false));
@@ -84,7 +83,6 @@ public class GameStartCommand extends CommandBase {
                 }
                 for (EntityPlayer player : CommonProxy.teamGreen.getPlayers()) {
                     player.setPositionAndUpdate(greenSpawn.getX(), greenSpawn.getY(), greenSpawn.getZ());
-                    player.inventory.armorInventory.set(3, ItemGenerator.getHelmet(true));
                     player.inventory.armorInventory.set(2, ItemGenerator.getChestplate(true));
                     player.inventory.armorInventory.set(1, ItemGenerator.getLeggings(true));
                     player.inventory.armorInventory.set(0, ItemGenerator.getBoots(true));

@@ -8,17 +8,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
 public class ItemGenerator {
-    public static ItemStack getHelmet(boolean isGreen) {
-        ItemStack helmet = new ItemStack(Items.LEATHER_HELMET);
-        if (isGreen) {
-            applyDataGreen(helmet);
-        }
-        else {
-            applyDataYellow(helmet);
-        }
-        return helmet;
-    }
-
     public static ItemStack getChestplate(boolean isGreen) {
         ItemStack chestplate = new ItemStack(Items.LEATHER_CHESTPLATE);
         if (isGreen) {
@@ -55,7 +44,7 @@ public class ItemGenerator {
     private static void applyDataGreen(ItemStack item) {
         applyEnchantments(item);
         item.addEnchantment(Enchantments.BINDING_CURSE, 1);
-        item.addEnchantment(Enchantments.PROTECTION, 5);
+        item.addEnchantment(Enchantments.PROTECTION, 3);
         NBTTagCompound color = new NBTTagCompound();
         color.setInteger("color", 6192150);
         item.getTagCompound().setTag("display", color);
@@ -64,7 +53,7 @@ public class ItemGenerator {
     private static void applyDataYellow(ItemStack item) {
         applyEnchantments(item);
         item.addEnchantment(Enchantments.BINDING_CURSE, 1);
-        item.addEnchantment(Enchantments.PROTECTION, 5);
+        item.addEnchantment(Enchantments.PROTECTION, 3);
         NBTTagCompound color = new NBTTagCompound();
         color.setInteger("color", 16701501);
         item.getTagCompound().setTag("display", color);
