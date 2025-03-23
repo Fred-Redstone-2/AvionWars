@@ -179,8 +179,10 @@ public class CommonProxy {
         EntityPlayer player = event.player;
         Thread stun = new Thread(() -> {
             playersRespawn.add(player);
-            for (int i = 0; i < 500; i++) {
-                player.attemptTeleport(player.posX, player.posY, player.posZ);
+            for (int i = 0; i < 600; i++) {
+                if (i < 500) {
+                    player.attemptTeleport(player.posX, player.posY, player.posZ);
+                }
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
