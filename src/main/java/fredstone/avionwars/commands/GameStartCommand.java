@@ -94,7 +94,7 @@ public class GameStartCommand extends CommandBase {
                 //Start the game
                 oresStarted = true;
                 runOres();
-                Timer timer = new Timer(1);
+                Timer timer = new Timer(Config.preparationDelay);
                 timer.startPreparation(sender);
                 gameStarted = true;
                 runGame();
