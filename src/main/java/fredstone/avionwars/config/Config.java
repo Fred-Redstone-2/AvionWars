@@ -17,10 +17,10 @@ public class Config {
     public static int deathsForPoint = 10;
     public static String breakableBlock = "cobblestone";
     public static int blockReplaceDelay = 20;
-    public static int ingotPercentToDrop = 25;
-    public static int leadRespawnTime = 20;
-    public static int copperRespawnTime = 35;
-    public static int uraniumRespawnTime = 50;
+    public static int ingotPercentToDrop = 50;
+    public static int leadRespawnTime = 60;
+    public static int copperRespawnTime = 60;
+    public static int uraniumRespawnTime = 60;
 
 
     // Call this from CommonProxy.preInit(). It will create our config if it doesn't

@@ -94,7 +94,7 @@ public class GameStartCommand extends CommandBase {
                 //Start the game
                 oresStarted = true;
                 runOres();
-                Timer timer = new Timer(Config.preparationDelay);
+                Timer timer = new Timer(1);
                 timer.startPreparation(sender);
                 gameStarted = true;
                 runGame();
@@ -175,7 +175,8 @@ public class GameStartCommand extends CommandBase {
                                 }
                             }
                         }
-                    } else if (greenStealer != null) {
+                    }
+                    if (greenStealer != null) {
                         if (inRange(greenStealer, CommonProxy.teamYellow.spawnpoint)) {
                             List<ItemStack> items = greenStealer.inventory.mainInventory;
                             for (ItemStack item : items) {

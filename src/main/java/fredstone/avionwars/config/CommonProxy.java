@@ -152,9 +152,7 @@ public class CommonProxy {
                         "returns to it's original place because its stealer is dead."));
             }
             for (ItemStack item : deathInv) {
-                if (!checkSoulbound(player, item)) {
-                    item.setCount(0);
-                }
+                checkOres(player, item);
             }
             player.inventory.addItemStackToInventory(ItemGenerator.getFood());
             for (EntityPlayer playerY : teamYellow.getPlayers()) {
@@ -175,43 +173,32 @@ public class CommonProxy {
         }
     }
 
-    private static boolean checkSoulbound(EntityPlayer player, @Nonnull ItemStack item) {
-        boolean isSoulbound = false;
+    private static void checkOres(EntityPlayer player, @Nonnull ItemStack item) {
         if (item.getItem().getRegistryName() == ModItems.ingot_lead.getRegistryName()) {
             int originalCount = item.getCount();
             int nbIngotsToDrop = originalCount * Config.ingotPercentToDrop / 100;
             ItemStack ingots = new ItemStack(ModItems.ingot_lead, nbIngotsToDrop);
             player.dropItem(ingots, false);
             item.setCount(originalCount - nbIngotsToDrop);
-            isSoulbound = true;
         } else if (item.getItem().getRegistryName() == ModItems.ingot_copper.getRegistryName()) {
             int originalCount = item.getCount();
             int nbIngotsToDrop = originalCount * Config.ingotPercentToDrop / 100;
             ItemStack ingots = new ItemStack(ModItems.ingot_copper, nbIngotsToDrop);
             player.dropItem(ingots, false);
             item.setCount(originalCount - nbIngotsToDrop);
-            isSoulbound = true;
         } else if (item.getItem().getRegistryName() == ModItems.ingot_uranium.getRegistryName()) {
             int originalCount = item.getCount();
             int nbIngotsToDrop = originalCount * Config.ingotPercentToDrop / 100;
             ItemStack ingots = new ItemStack(ModItems.ingot_uranium, nbIngotsToDrop);
             player.dropItem(ingots, false);
             item.setCount(originalCount - nbIngotsToDrop);
-            isSoulbound = true;
         }
-        Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(item);
-        for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
-            Enchantment ench = entry.getKey();
-            if (ench.getName().equals("enchantment.avionwars.death_keeping")) {
-                isSoulbound = true;
-            }
-        }
-        return isSoulbound;
     }
 
     public static void checkPoints() throws CommandException {
         if (teamGreen.nbDeaths >= Config.deathsForPoint) {
             teamYellow.addPoint();
+            teamGreen.nbDeaths = 0;
             server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
                     TextFormatting.YELLOW + "Yellow" + TextFormatting.RESET + TextFormatting.BOLD + " team scores a point by killing the " +
                     TextFormatting.GRAY + "Green" + TextFormatting.RESET + TextFormatting.BOLD + " team 10 times!"));
@@ -219,6 +206,7 @@ public class CommonProxy {
         }
         if (teamYellow.nbDeaths >= Config.deathsForPoint) {
             teamGreen.addPoint();
+            teamYellow.nbDeaths = 0;
             server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
                     TextFormatting.GREEN + "Green" + TextFormatting.RESET + TextFormatting.BOLD + " team scores a point by killing the " + TextFormatting.GRAY +
                     "Yellow" + TextFormatting.RESET + TextFormatting.BOLD + " team 10 times!"));
@@ -313,12 +301,13 @@ public class CommonProxy {
 
     public static void returnYellowFlag() {
         server.getWorld(0).setBlockState(yellowFlagLocation, ModBlocks.flag_block_yellow.getDefaultState());
-        GameStartCommand.greenStealer.removePotionEffect(MobEffects.GLOWING);
+        GameStartCommand.yellowStealer.removePotionEffect(MobEffects.GLOWING);
         GameStartCommand.yellowStealer = null;
     }
 
     public static void endGame() {
         GameStartCommand.gameStarted = false;
+        GameStartCommand.oresStarted = false;
         String team;
         if (teamGreen.nbPoints >= Config.winningPoints) {
             team = TextFormatting.GREEN + "Green";
