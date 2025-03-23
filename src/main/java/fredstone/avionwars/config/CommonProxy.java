@@ -11,7 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.command.CommandException;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
@@ -34,11 +33,12 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import javax.annotation.Nonnull;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static fredstone.avionwars.config.AvionWars.server;
 
@@ -53,6 +53,7 @@ public class CommonProxy {
     public static BlockPos greenFlagLocation;
     public static boolean replaceBlocks = true;
     public static boolean explosionEnable = false;
+    private static List<EntityPlayer> playersRespawn = new ArrayList<>();
 
     public void preInit(FMLPreInitializationEvent event) {
         File directory = event.getModConfigurationDirectory();
@@ -123,7 +124,6 @@ public class CommonProxy {
     public static void onDeath(LivingDeathEvent event) {
         if (event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntity();
-            List<ItemStack> deathInv = player.inventory.mainInventory;
             if (GameStartCommand.greenStealer != null && GameStartCommand.greenStealer.getName().equals(player.getName())) {
                 returnGreenFlag();
                 for (EntityPlayer teamMember : teamGreen.getPlayers()) {
@@ -151,6 +151,7 @@ public class CommonProxy {
                         TextFormatting.YELLOW + "Yellow" + TextFormatting.RESET + TextFormatting.BOLD + " flag " +
                         "returns to it's original place because its stealer is dead."));
             }
+            List<ItemStack> deathInv = player.inventory.mainInventory;
             for (ItemStack item : deathInv) {
                 checkOres(player, item);
             }
@@ -171,6 +172,24 @@ public class CommonProxy {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        EntityPlayer player = event.player;
+        Thread stun = new Thread(() -> {
+            playersRespawn.add(player);
+            for (int i = 0; i < 500; i++) {
+                player.attemptTeleport(player.posX, player.posY, player.posZ);
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    player.sendMessage(new TextComponentString("Thread interrupted"));
+                }
+            }
+            playersRespawn.remove(player);
+        });
+        stun.start();
     }
 
     private static void checkOres(EntityPlayer player, @Nonnull ItemStack item) {
@@ -281,8 +300,10 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void onDamage(LivingDamageEvent event) {
-        if (!GameStartCommand.gameStarted && event.getEntity() instanceof EntityPlayer) {
-            event.setCanceled(true);
+        if (event.getEntity() instanceof EntityPlayer) {
+            if (!GameStartCommand.gameStarted || playersRespawn.contains((EntityPlayer) event.getEntity())) {
+                event.setCanceled(true);
+            }
         }
     }
 
