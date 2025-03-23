@@ -249,11 +249,11 @@ public class CommonProxy {
             yellowFlagLocation = pos;
             GameStartCommand.yellowStealer = event.getHarvester();
             event.getHarvester().addPotionEffect(new PotionEffect(MobEffects.GLOWING, 999999, 1));
-        } else if (block == ModBlocks.ore_lead && GameStartCommand.gameStarted) {
+        } else if (block == ModBlocks.ore_lead && GameStartCommand.oresStarted) {
             GameStartCommand.leadOres.add(pos);
-        } else if (block == ModBlocks.ore_copper && GameStartCommand.gameStarted) {
+        } else if (block == ModBlocks.ore_copper && GameStartCommand.oresStarted) {
             GameStartCommand.copperOres.add(pos);
-        } else if (block == ModBlocks.ore_uranium && GameStartCommand.gameStarted) {
+        } else if (block == ModBlocks.ore_uranium && GameStartCommand.oresStarted) {
             GameStartCommand.uraniumOres.add(pos);
         } else if (block != Block.getBlockFromName(Config.breakableBlock) && replaceBlocks) {
             event.getDrops().clear();
