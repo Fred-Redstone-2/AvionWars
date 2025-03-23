@@ -13,9 +13,11 @@ import net.minecraft.command.CommandException;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -119,9 +121,36 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
-        if (event.getEntity() instanceof EntityPlayer) {
+        if (event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntity();
             List<ItemStack> deathInv = player.inventory.mainInventory;
+            if (GameStartCommand.greenStealer != null && GameStartCommand.greenStealer.getName().equals(player.getName())) {
+                returnGreenFlag();
+                for (EntityPlayer teamMember : teamGreen.getPlayers()) {
+                    List<ItemStack> items = teamMember.inventory.mainInventory;
+                    for (ItemStack item : items) {
+                        if (item.getItem().getRegistryName() == ModItems.flag_green.getRegistryName()) {
+                            item.setCount(0);
+                        }
+                    }
+                }
+                server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
+                        TextFormatting.GREEN + "Green" + TextFormatting.RESET + TextFormatting.BOLD + " flag " +
+                        "returns to it's original place because its stealer is dead."));
+            } else if (GameStartCommand.yellowStealer != null && GameStartCommand.yellowStealer.getName().equals(player.getName())) {
+                returnYellowFlag();
+                for (EntityPlayer teamMember : teamYellow.getPlayers()) {
+                    List<ItemStack> items = teamMember.inventory.mainInventory;
+                    for (ItemStack item : items) {
+                        if (item.getItem().getRegistryName() == ModItems.flag_yellow.getRegistryName()) {
+                            item.setCount(0);
+                        }
+                    }
+                }
+                server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
+                        TextFormatting.YELLOW + "Yellow" + TextFormatting.RESET + TextFormatting.BOLD + " flag " +
+                        "returns to it's original place because its stealer is dead."));
+            }
             for (ItemStack item : deathInv) {
                 if (!checkSoulbound(player, item)) {
                     item.setCount(0);
@@ -148,17 +177,7 @@ public class CommonProxy {
 
     private static boolean checkSoulbound(EntityPlayer player, @Nonnull ItemStack item) {
         boolean isSoulbound = false;
-        if (item.getItem().getRegistryName() == ModItems.flag_green.getRegistryName()) {
-            returnGreenFlag();
-            server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
-                    TextFormatting.GREEN + "Green" + TextFormatting.RESET + TextFormatting.BOLD + " flag " +
-                    "returns to it's original place because its stealer is dead."));
-        } else if (item.getItem().getRegistryName() == ModItems.flag_yellow.getRegistryName()) {
-            returnYellowFlag();
-            server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
-                    TextFormatting.YELLOW + "Yellow" + TextFormatting.RESET + TextFormatting.BOLD + " flag " +
-                    "returns to it's original place because its stealer is dead."));
-        } else if (item.getItem().getRegistryName() == ModItems.ingot_lead.getRegistryName()) {
+        if (item.getItem().getRegistryName() == ModItems.ingot_lead.getRegistryName()) {
             int originalCount = item.getCount();
             int nbIngotsToDrop = originalCount * Config.ingotPercentToDrop / 100;
             ItemStack ingots = new ItemStack(ModItems.ingot_lead, nbIngotsToDrop);
@@ -222,12 +241,14 @@ public class CommonProxy {
                     + TextFormatting.YELLOW + event.getHarvester().getName() + TextFormatting.RESET + TextFormatting.BOLD + "!"));
             greenFlagLocation = pos;
             GameStartCommand.greenStealer = event.getHarvester();
+            event.getHarvester().addPotionEffect(new PotionEffect(MobEffects.GLOWING, 999999, 1));
         } else if (block == ModBlocks.flag_block_yellow && GameStartCommand.gameStarted) {
             server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
                     TextFormatting.YELLOW + "Yellow" + TextFormatting.RESET + TextFormatting.BOLD + " flag was stolen by "
                     + TextFormatting.GREEN + event.getHarvester().getName() + TextFormatting.RESET + TextFormatting.BOLD + "!"));
             yellowFlagLocation = pos;
             GameStartCommand.yellowStealer = event.getHarvester();
+            event.getHarvester().addPotionEffect(new PotionEffect(MobEffects.GLOWING, 999999, 1));
         } else if (block == ModBlocks.ore_lead && GameStartCommand.gameStarted) {
             GameStartCommand.leadOres.add(pos);
         } else if (block == ModBlocks.ore_copper && GameStartCommand.gameStarted) {
@@ -286,11 +307,13 @@ public class CommonProxy {
 
     public static void returnGreenFlag() {
         server.getWorld(0).setBlockState(greenFlagLocation, ModBlocks.flag_block_green.getDefaultState());
+        GameStartCommand.greenStealer.removePotionEffect(MobEffects.GLOWING);
         GameStartCommand.greenStealer = null;
     }
 
     public static void returnYellowFlag() {
         server.getWorld(0).setBlockState(yellowFlagLocation, ModBlocks.flag_block_yellow.getDefaultState());
+        GameStartCommand.greenStealer.removePotionEffect(MobEffects.GLOWING);
         GameStartCommand.yellowStealer = null;
     }
 
