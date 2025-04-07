@@ -12,6 +12,8 @@ public class Config {
     public static String spawnYellow = "0,80,0";
     public static String spawnGreen = "0,80,0";
     public static int preparationDelay = 20 * 60;
+    public static int spawnImmunity = 6;
+    public static int spawnDelay = 5;
     public static int winningPoints = 3;
     public static int flagReturnRadius = 5;
     public static int deathsForPoint = 10;
@@ -57,6 +59,10 @@ public class Config {
                 CATEGORY_GENERAL, flagReturnRadius, 1, 10, "Set the Integer for the radius in blocks");
         deathsForPoint = cfg.getInt("Number of deaths for the enemy team to get a point", CATEGORY_GENERAL, deathsForPoint,
                 1, 100, "Set the Integer for the number of deaths");
+        spawnImmunity = cfg.getInt("Delay before the player takes damage after respawning", CATEGORY_GENERAL,
+                spawnImmunity, 0, 100, "Set the Integer delay for player respawn immunity");
+        spawnDelay = cfg.getInt("Delay before the player can move after respawning", CATEGORY_GENERAL,
+                spawnDelay, 0, 100, "Set the Integer delay for player respawn delay");
     }
 
     private static void initOreConfig(Configuration cfg) {

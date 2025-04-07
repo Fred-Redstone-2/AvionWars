@@ -53,7 +53,7 @@ public class CommonProxy {
     public static BlockPos greenFlagLocation;
     public static boolean replaceBlocks = true;
     public static boolean explosionEnable = false;
-    private static List<EntityPlayer> playersRespawn = new ArrayList<>();
+    private static final List<EntityPlayer> playersRespawn = new ArrayList<>();
 
     public void preInit(FMLPreInitializationEvent event) {
         File directory = event.getModConfigurationDirectory();
@@ -179,8 +179,8 @@ public class CommonProxy {
         EntityPlayer player = event.player;
         Thread stun = new Thread(() -> {
             playersRespawn.add(player);
-            for (int i = 0; i < 600; i++) {
-                if (i < 500) {
+            for (int i = 0; i < Config.spawnImmunity * 100; i++) {
+                if (i < Config.spawnImmunity * 100) {
                     player.attemptTeleport(player.posX, player.posY, player.posZ);
                 }
                 try {
