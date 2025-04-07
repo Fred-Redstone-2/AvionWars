@@ -223,7 +223,7 @@ public class CommonProxy {
             server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
                     TextFormatting.YELLOW + "Yellow" + TextFormatting.RESET + TextFormatting.BOLD + " team scores a point by killing the " +
                     TextFormatting.GRAY + "Green" + TextFormatting.RESET + TextFormatting.BOLD + " team 10 times!"));
-            ScoreboardAvionWars.addPointYellow(GameStartCommand.admin);
+            ScoreboardAvionWars.modifyPoints(GameStartCommand.admin, "add", "Yellow");
         }
         if (teamYellow.nbDeaths >= Config.deathsForPoint) {
             teamGreen.addPoint();
@@ -231,7 +231,7 @@ public class CommonProxy {
             server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
                     TextFormatting.GREEN + "Green" + TextFormatting.RESET + TextFormatting.BOLD + " team scores a point by killing the " + TextFormatting.GRAY +
                     "Yellow" + TextFormatting.RESET + TextFormatting.BOLD + " team 10 times!"));
-            ScoreboardAvionWars.addPointGreen(GameStartCommand.admin);
+            ScoreboardAvionWars.modifyPoints(GameStartCommand.admin, "add", "Green");
         }
         if (teamGreen.nbPoints >= Config.winningPoints || teamYellow.nbPoints >= Config.winningPoints) {
             endGame();

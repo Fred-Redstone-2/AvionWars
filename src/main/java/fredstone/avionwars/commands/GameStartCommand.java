@@ -168,7 +168,7 @@ public class GameStartCommand extends CommandBase {
                                             "The " + TextFormatting.GREEN + "Green" + TextFormatting.RESET + TextFormatting.BOLD +
                                             " team scores a point by brining back the " + TextFormatting.GRAY + "Yellow" +
                                             TextFormatting.RESET + TextFormatting.BOLD + " flag!"));
-                                    ScoreboardAvionWars.addPointGreen(admin);
+                                    ScoreboardAvionWars.modifyPoints(admin, "add", "Green");
 
                                     CommonProxy.checkPoints();
                                     CommonProxy.returnYellowFlag();
@@ -187,7 +187,7 @@ public class GameStartCommand extends CommandBase {
                                             "The " + TextFormatting.YELLOW + "Yellow" + TextFormatting.RESET + TextFormatting.BOLD +
                                             " team scores a point by brining back the " + TextFormatting.GRAY + "Green" +
                                             TextFormatting.RESET + TextFormatting.BOLD + " flag!"));
-                                    ScoreboardAvionWars.addPointYellow(admin);
+                                    ScoreboardAvionWars.modifyPoints(admin, "add", "Yellow");
 
                                     CommonProxy.checkPoints();
                                     CommonProxy.returnGreenFlag();

@@ -1,7 +1,7 @@
 package fredstone.avionwars.commands;
 
 import fredstone.avionwars.config.CommonProxy;
-import fredstone.avionwars.other.Team;
+import fredstone.avionwars.other.ScoreboardAvionWars;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -26,32 +26,44 @@ public class PointManipCommand extends CommandBase {
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "Usage: /point [add|remove] <Team Name>"));
             return;
         }
-        Team team;
-        switch (args[1].toLowerCase()) {
-            case "yellow": {
-                team = CommonProxy.teamYellow;
-                break;
-            }
-            case "green": {
-                team = CommonProxy.teamGreen;
-                break;
-            }
-            default: {
-                sender.sendMessage(new TextComponentString(TextFormatting.RED + "Wrong first argument! Usage: /point [add|remove] <Team Name>"));
-                return;
-            }
-        }
         switch (args[0]) {
             case "add": {
-                team.nbPoints++;
+                switch (args[1].toLowerCase()) {
+                    case "yellow": {
+                        CommonProxy.teamYellow.addPoint();
+                        ScoreboardAvionWars.modifyPoints(sender, "add", "Yellow");
+                        break;
+                    }
+                    case "green": {
+                        CommonProxy.teamGreen.addPoint();
+                        ScoreboardAvionWars.modifyPoints(sender, "add", "Green");
+                        break;
+                    }
+                    default: {
+                        sender.sendMessage(new TextComponentString(TextFormatting.RED + "Wrong second argument! Usage: /point [add|remove] <Team Name>"));
+                        return;
+                    }
+                }
                 break;
             }
             case "remove": {
-                team.nbPoints--;
+                switch (args[1].toLowerCase()) {
+                    case "yellow": {
+                        CommonProxy.teamYellow.nbPoints--;
+                        ScoreboardAvionWars.modifyPoints(sender, "remove", "Yellow");
+                        break;
+                    }
+                    case "green": {
+                        CommonProxy.teamGreen.nbPoints--;
+                        ScoreboardAvionWars.modifyPoints(sender, "remove", "Green");
+                        break;
+                    }
+                }
                 break;
             }
             default: {
                 sender.sendMessage(new TextComponentString(TextFormatting.RED + "Wrong first argument! Usage: /point [add|remove] <Team Name>"));
+                break;
             }
         }
     }

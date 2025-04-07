@@ -35,15 +35,9 @@ public class ScoreboardAvionWars {
         }
     }
 
-    public static void addPointYellow(ICommandSender sender) throws CommandException {
+    public static void modifyPoints(ICommandSender sender, String mode, String team) throws CommandException {
         CommandScoreboard scoreboard = new CommandScoreboard();
-        String[] addYellow = {"players", "add", "Yellow", "AvionWars", String.valueOf(1)};
-        scoreboard.execute(server, sender, addYellow);
-    }
-
-    public static void addPointGreen(ICommandSender sender) throws CommandException {
-        CommandScoreboard scoreboard = new CommandScoreboard();
-        String[] addGreen = {"players", "add", "Green", "AvionWars", String.valueOf(1)};
-        scoreboard.execute(server, sender, addGreen);
+        String[] args = {"players", mode, team, "AvionWars", String.valueOf(1)};
+        scoreboard.execute(server, sender, args);
     }
 }
