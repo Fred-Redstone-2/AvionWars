@@ -60,9 +60,9 @@ public class Config {
         deathsForPoint = cfg.getInt("Number of deaths for the enemy team to get a point", CATEGORY_GENERAL, deathsForPoint,
                 1, 100, "Set the Integer for the number of deaths");
         spawnImmunity = cfg.getInt("Delay before the player takes damage after respawning", CATEGORY_GENERAL,
-                spawnImmunity, 0, 100, "Set the Integer delay for player respawn immunity");
+                spawnImmunity, 0, 100, "Set the Integer delay for player respawn immunity in seconds");
         spawnDelay = cfg.getInt("Delay before the player can move after respawning", CATEGORY_GENERAL,
-                spawnDelay, 0, 100, "Set the Integer delay for player respawn delay");
+                spawnDelay, 0, 100, "Set the Integer delay for player respawn delay in seconds");
     }
 
     private static void initOreConfig(Configuration cfg) {

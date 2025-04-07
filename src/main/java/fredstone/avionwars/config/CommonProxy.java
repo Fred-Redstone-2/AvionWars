@@ -126,7 +126,7 @@ public class CommonProxy {
             EntityPlayer player = (EntityPlayer) event.getEntity();
             if (GameStartCommand.greenStealer != null && GameStartCommand.greenStealer.getName().equals(player.getName())) {
                 returnGreenFlag();
-                for (EntityPlayer teamMember : teamGreen.getPlayers()) {
+                for (EntityPlayer teamMember : teamYellow.getPlayers()) {
                     List<ItemStack> items = teamMember.inventory.mainInventory;
                     for (ItemStack item : items) {
                         if (item.getItem().getRegistryName() == ModItems.flag_green.getRegistryName()) {
@@ -139,7 +139,7 @@ public class CommonProxy {
                         "returns to it's original place because its stealer is dead."));
             } else if (GameStartCommand.yellowStealer != null && GameStartCommand.yellowStealer.getName().equals(player.getName())) {
                 returnYellowFlag();
-                for (EntityPlayer teamMember : teamYellow.getPlayers()) {
+                for (EntityPlayer teamMember : teamGreen.getPlayers()) {
                     List<ItemStack> items = teamMember.inventory.mainInventory;
                     for (ItemStack item : items) {
                         if (item.getItem().getRegistryName() == ModItems.flag_yellow.getRegistryName()) {
@@ -243,28 +243,46 @@ public class CommonProxy {
         Block block = event.getState().getBlock();
         BlockPos pos = event.getPos();
 
+        boolean isFlag = false;
         //If game not started, replace blocks
         if (block == ModBlocks.flag_block_green && GameStartCommand.gameStarted) {
-            server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
-                    TextFormatting.GREEN + "Green" + TextFormatting.RESET + TextFormatting.BOLD + " flag was stolen by "
-                    + TextFormatting.YELLOW + event.getHarvester().getName() + TextFormatting.RESET + TextFormatting.BOLD + "!"));
-            greenFlagLocation = pos;
-            GameStartCommand.greenStealer = event.getHarvester();
-            event.getHarvester().addPotionEffect(new PotionEffect(MobEffects.GLOWING, 999999, 1));
-        } else if (block == ModBlocks.flag_block_yellow && GameStartCommand.gameStarted) {
-            server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
-                    TextFormatting.YELLOW + "Yellow" + TextFormatting.RESET + TextFormatting.BOLD + " flag was stolen by "
-                    + TextFormatting.GREEN + event.getHarvester().getName() + TextFormatting.RESET + TextFormatting.BOLD + "!"));
-            yellowFlagLocation = pos;
-            GameStartCommand.yellowStealer = event.getHarvester();
-            event.getHarvester().addPotionEffect(new PotionEffect(MobEffects.GLOWING, 999999, 1));
-        } else if (block == ModBlocks.ore_lead && GameStartCommand.oresStarted) {
+            for (EntityPlayer player : teamYellow.getPlayers()) {
+                if (player.getName().equals(event.getHarvester().getName())) {
+                    isFlag = true;
+                }
+            }
+            if (isFlag) {
+                server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
+                        TextFormatting.GREEN + "Green" + TextFormatting.RESET + TextFormatting.BOLD + " flag was stolen by "
+                        + TextFormatting.YELLOW + event.getHarvester().getName() + TextFormatting.RESET + TextFormatting.BOLD + "!"));
+                greenFlagLocation = pos;
+                GameStartCommand.greenStealer = event.getHarvester();
+                event.getHarvester().addPotionEffect(new PotionEffect(MobEffects.GLOWING, 999999, 1));
+            }
+        }
+        if (block == ModBlocks.flag_block_yellow && GameStartCommand.gameStarted) {
+            for (EntityPlayer player : teamGreen.getPlayers()) {
+                if (player.getName().equals(event.getHarvester().getName())) {
+                    isFlag = true;
+                }
+            }
+            if (isFlag) {
+                server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD + "The " +
+                        TextFormatting.YELLOW + "Yellow" + TextFormatting.RESET + TextFormatting.BOLD + " flag was stolen by "
+                        + TextFormatting.GREEN + event.getHarvester().getName() + TextFormatting.RESET + TextFormatting.BOLD + "!"));
+                yellowFlagLocation = pos;
+                GameStartCommand.yellowStealer = event.getHarvester();
+                event.getHarvester().addPotionEffect(new PotionEffect(MobEffects.GLOWING, 999999, 1));
+            }
+        }
+
+        if (block == ModBlocks.ore_lead && GameStartCommand.oresStarted) {
             GameStartCommand.leadOres.add(pos);
         } else if (block == ModBlocks.ore_copper && GameStartCommand.oresStarted) {
             GameStartCommand.copperOres.add(pos);
         } else if (block == ModBlocks.ore_uranium && GameStartCommand.oresStarted) {
             GameStartCommand.uraniumOres.add(pos);
-        } else if (block != Block.getBlockFromName(Config.breakableBlock) && replaceBlocks) {
+        } else if (block != Block.getBlockFromName(Config.breakableBlock) && replaceBlocks && !isFlag) {
             event.getDrops().clear();
             Thread replace = new Thread(() -> {
                 try {

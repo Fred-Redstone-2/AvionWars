@@ -74,6 +74,7 @@ public class GameStartCommand extends CommandBase {
                 BlockPos greenSpawn = CommonProxy.teamGreen.spawnpoint;
                 for (EntityPlayer player : CommonProxy.teamYellow.getPlayers()) {
                     player.setPositionAndUpdate(yellowSpawn.getX(), yellowSpawn.getY(), yellowSpawn.getZ());
+                    player.inventory.armorInventory.set(3, ItemGenerator.getHelmet(false));
                     player.inventory.armorInventory.set(2, ItemGenerator.getChestplate(false));
                     player.inventory.armorInventory.set(1, ItemGenerator.getLeggings(false));
                     player.inventory.armorInventory.set(0, ItemGenerator.getBoots(false));
@@ -83,6 +84,7 @@ public class GameStartCommand extends CommandBase {
                 }
                 for (EntityPlayer player : CommonProxy.teamGreen.getPlayers()) {
                     player.setPositionAndUpdate(greenSpawn.getX(), greenSpawn.getY(), greenSpawn.getZ());
+                    player.inventory.armorInventory.set(3, ItemGenerator.getHelmet(true));
                     player.inventory.armorInventory.set(2, ItemGenerator.getChestplate(true));
                     player.inventory.armorInventory.set(1, ItemGenerator.getLeggings(true));
                     player.inventory.armorInventory.set(0, ItemGenerator.getBoots(true));
@@ -166,7 +168,7 @@ public class GameStartCommand extends CommandBase {
                                     CommonProxy.teamGreen.addPoint();
                                     AvionWars.server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD +
                                             "The " + TextFormatting.GREEN + "Green" + TextFormatting.RESET + TextFormatting.BOLD +
-                                            " team scores a point by brining back the " + TextFormatting.GRAY + "Yellow" +
+                                            " team scores a point by bringing back the " + TextFormatting.GRAY + "Yellow" +
                                             TextFormatting.RESET + TextFormatting.BOLD + " flag!"));
                                     ScoreboardAvionWars.modifyPoints(admin, "add", "Green");
 
@@ -185,7 +187,7 @@ public class GameStartCommand extends CommandBase {
                                     CommonProxy.teamYellow.addPoint();
                                     AvionWars.server.getPlayerList().sendMessage(new TextComponentString(TextFormatting.BOLD +
                                             "The " + TextFormatting.YELLOW + "Yellow" + TextFormatting.RESET + TextFormatting.BOLD +
-                                            " team scores a point by brining back the " + TextFormatting.GRAY + "Green" +
+                                            " team scores a point by bringing back the " + TextFormatting.GRAY + "Green" +
                                             TextFormatting.RESET + TextFormatting.BOLD + " flag!"));
                                     ScoreboardAvionWars.modifyPoints(admin, "add", "Yellow");
 
@@ -206,6 +208,6 @@ public class GameStartCommand extends CommandBase {
     }
 
     private boolean inRange(EntityPlayer player, BlockPos coordinate) {
-        return Math.sqrt(Math.pow(player.posX - coordinate.getX(), 2) + Math.pow(player.posZ - coordinate.getZ(), 2)) < Config.flagReturnRadius;
+        return Math.sqrt(Math.pow(player.posX - coordinate.getX(), 2) + Math.pow(player.posY - coordinate.getY(), 2) + Math.pow(player.posZ - coordinate.getZ(), 2)) < Config.flagReturnRadius;
     }
 }

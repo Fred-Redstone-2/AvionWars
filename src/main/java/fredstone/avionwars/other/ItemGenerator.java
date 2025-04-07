@@ -8,6 +8,17 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
 public class ItemGenerator {
+    public static ItemStack getHelmet(boolean isGreen) {
+        ItemStack helmet = new ItemStack(Items.LEATHER_HELMET);
+        if (isGreen) {
+            applyDataGreen(helmet);
+        }
+        else {
+            applyDataYellow(helmet);
+        }
+        return helmet;
+    }
+
     public static ItemStack getChestplate(boolean isGreen) {
         ItemStack chestplate = new ItemStack(Items.LEATHER_CHESTPLATE);
         if (isGreen) {
