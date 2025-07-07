@@ -51,7 +51,7 @@ public class CommonProxy {
     public static Team teamGreen;
     public static BlockPos yellowFlagLocation;
     public static BlockPos greenFlagLocation;
-    public static boolean replaceBlocks = true;
+    public static boolean replaceBlocks = false;
     public static boolean explosionEnable = false;
     private static final List<EntityPlayer> playersRespawn = new ArrayList<>();
 
@@ -359,7 +359,3 @@ public class CommonProxy {
                 team + TextFormatting.RESET + TextFormatting.BOLD + " team wins the game by accumulating 3 points!"));
     }
 }
-
-
-
-
